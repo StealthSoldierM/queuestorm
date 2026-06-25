@@ -125,7 +125,7 @@ Expected `case_type`s: `wrong_transfer`, `payment_failed`, `phishing_or_social_e
 
 ## Submission checklist
 
-- [ ] Public GitHub repo with this README.
-- [ ] Live HTTPS URL with `/health` returning `{"status":"ok"}` in under 10 s.
-- [ ] No secrets committed; `.env` is gitignored.
-- [ ] Live URL submitted via the Google Form.
+- [x] Public GitHub repo with this README.
+- [x] Live HTTPS URL with `/health` returning `{"status":"ok"}` in under 10 s.
+- [x] No secrets committed; `.env` is gitignored.
+- [x] Live URL submitted via the Google Form.
