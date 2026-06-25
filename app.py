@@ -3,6 +3,9 @@
 A small FastAPI service that classifies one CRM ticket at a time and returns
 a JSON verdict. Rules-based, no LLM, no GPU. See PUKU.md for the full brief.
 """
+
+# Build marker: ensures Render picks up the latest static/index.html on redeploy.
+BUILD_REV = "2026-06-25-ui-redesign"
 from __future__ import annotations
 
 import re
