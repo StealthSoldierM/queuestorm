@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QueueStorm — CRM Ticket Classifier</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --card: #131a2e;
+    --ink: #e7ecf7;
+    --muted: #8a93a8;
+    --accent: #4f8cff;
+    --accent-2: #7d5cff;
+    --good: #2bd49c;
+    --warn: #ffb648;
+    --bad: #ff5c7a;
+    --border: #24304f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -10%, #1a2350 0%, transparent 60%),
+                radial-gradient(900px 500px at -10% 110%, #2a1646 0%, transparent 55%),
+                var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+  header {
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { margin: 0; font-size: 20px; letter-spacing: 0.2px; }
+  header .badge {
+    font-size: 12px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 820px) { main { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .card h2 { margin: 0 0 12px; font-size: 16px; color: var(--muted); font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; }
+  label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  input, select, textarea {
+    width: 100%;
+    background: #0c1226;
+    color: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 110px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  button {
+    width: 100%;
+    margin-top: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    border: 0;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.05s ease;
+  }
+  button:active { transform: translateY(1px); }
+  button:disabled { opacity: 0.6; cursor: not-allowed; }
+  .sample-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .sample-row button { width: auto; margin: 0; padding: 6px 10px; font-size: 12px; font-weight: 500; background: #1c2545; color: var(--ink); border: 1px solid var(--border); }
+  .sample-row button:hover { background: #25305a; }
+  pre {
+    background: #0a0f23;
+    color: #d6deef;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    overflow: auto;
+    max-height: 480px;
+  }
+  .field { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border); }
+  .field:last-child { border-bottom: 0; }
+  .field .k { color: var(--muted); font-size: 13px; }
+  .field .v { font-size: 13px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .pill.low { background: rgba(43, 212, 156, 0.15); color: var(--good); }
+  .pill.medium { background: rgba(255, 182, 72, 0.15); color: var(--warn); }
+  .pill.high { background: rgba(255, 92, 122, 0.15); color: var(--bad); }
+  .pill.critical { background: rgba(255, 92, 122, 0.35); color: #ffd1da; }
+  .status { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  .status.err { color: var(--bad); }
+  .status.ok { color: var(--good); }
+</style>
+</head>
+<body>
+<header>
+  <h1>QueueStorm — CRM Ticket Classifier</h1>
+  <span class="badge">SUST CSE Carnival 2026 · Warmup</span>
+</header>
+
+<main>
+  <section class="card">
+    <h2>New ticket</h2>
+    <div class="row">
+      <div>
+        <label for="ticket_id">Ticket ID</label>
+        <input id="ticket_id" type="text" value="T-001" />
+      </div>
+      <div>
+        <label for="channel">Channel</label>
+        <select id="channel">
+          <option value="app">app</option>
+          <option value="sms">sms</option>
+          <option value="call_center">call_center</option>
+          <option value="merchant_portal">merchant_portal</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="locale">Locale</label>
+        <select id="locale">
+          <option value="en">en</option>
+          <option value="bn">bn</option>
+          <option value="mixed">mixed</option>
+        </select>
+      </div>
+      <div></div>
+    </div>
+    <label for="message">Customer message</label>
+    <textarea id="message" placeholder="e.g. I sent 3000 taka to a wrong number, please help me get it back"></textarea>
+    <button id="submit">Classify ticket</button>
+
+    <div class="sample-row">
+      <button data-msg="I sent 3000 to wrong number">Sample 1 · wrong transfer</button>
+      <button data-msg="Payment failed but balance deducted?">Sample 2 · payment failed</button>
+      <button data-msg="Someone called asking my OTP, is that bKash?">Sample 3 · phishing</button>
+      <button data-msg="Please refund my last transaction, I changed my mind">Sample 4 · refund</button>
+      <button data-msg="App crashed when I opened it">Sample 5 · other</button>
+    </div>
+    <div id="status" class="status"></div>
+  </section>
+
+  <section class="card">
+    <h2>Classification</h2>
+    <pre id="result">Submit a ticket to see the JSON response here.</pre>
+  </section>
+</main>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const samples = document.querySelectorAll('.sample-row button');
+  samples.forEach((b) => b.addEventListener('click', () => { $('message').value = b.dataset.msg; }));
+
+  $('submit').addEventListener('click', async () => {
+    const status = $('status');
+    const out = $('result');
+    status.className = 'status';
+    status.textContent = 'Sending…';
+    out.textContent = '…';
+
+    const body = {
+      ticket_id: $('ticket_id').value.trim() || 'T-' + Date.now(),
+      channel: $('channel').value,
+      locale: $('locale').value,
+      message: $('message').value.trim(),
+    };
+    if (!body.message) {
+      status.className = 'status err';
+      status.textContent = 'Please enter a customer message.';
+      return;
+    }
+
+    const t0 = performance.now();
+    try {
+      const r = await fetch('/sort-ticket', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const elapsed = (performance.now() - t0).toFixed(0);
+      const data = await r.json();
+      if (!r.ok) {
+        status.className = 'status err';
+        status.textContent = 'HTTP ' + r.status + ' in ' + elapsed + ' ms';
+        out.textContent = JSON.stringify(data, null, 2);
+        return;
+      }
+      status.className = 'status ok';
+      status.textContent = 'HTTP 200 in ' + elapsed + ' ms';
+      out.textContent = JSON.stringify(data, null, 2);
+    } catch (e) {
+      status.className = 'status err';
+      status.textContent = 'Network error: ' + e.message;
+      out.textContent = String(e);
+    }
+  });
+</script>
+</body>
+</html>
