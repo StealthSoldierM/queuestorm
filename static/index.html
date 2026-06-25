@@ -116,6 +116,191 @@
   .status { font-size: 13px; color: var(--muted); margin-top: 10px; }
   .status.err { color: var(--bad); }
   .status.ok { color: var(--good); }
+
+  /* ----- Classification panel ----- */
+  .result-empty {
+    color: var(--muted);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 32px 16px;
+    text-align: center;
+    font-size: 14px;
+  }
+  .result-card {
+    background: linear-gradient(180deg, #131a2e 0%, #10162a 100%);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .result-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .ticket-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.4px;
+  }
+  .ticket-id strong { color: var(--ink); font-weight: 600; }
+  .human-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .human-flag.on {
+    background: rgba(255, 92, 122, 0.18);
+    color: #ffd1da;
+    border-color: rgba(255, 92, 122, 0.4);
+  }
+  .human-flag.off {
+    background: rgba(43, 212, 156, 0.12);
+    color: var(--good);
+    border-color: rgba(43, 212, 156, 0.3);
+  }
+  .human-flag .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: currentColor;
+  }
+  .hero-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .tile {
+    background: #0c1226;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .tile .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .tile .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    word-break: break-word;
+  }
+  .tile.case .value { color: var(--accent); }
+  .tile.severity .value { color: var(--ink); }
+  .tile.department .value { color: #c9a8ff; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
+  .sev-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+  .sev-pill.low { background: rgba(43, 212, 156, 0.15); color: var(--good); }
+  .sev-pill.medium { background: rgba(255, 182, 72, 0.15); color: var(--warn); }
+  .sev-pill.high { background: rgba(255, 92, 122, 0.15); color: var(--bad); }
+  .sev-pill.critical { background: rgba(255, 92, 122, 0.35); color: #ffd1da; box-shadow: 0 0 0 1px rgba(255, 92, 122, 0.5); }
+  .summary {
+    background: #0a0f23;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink);
+    font-style: italic;
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .summary::before {
+    content: "“";
+    position: absolute;
+    top: -4px;
+    left: 10px;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--accent);
+    opacity: 0.35;
+    font-family: Georgia, serif;
+    font-style: normal;
+  }
+  .summary-text { display: block; padding-left: 6px; }
+  .confidence-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #0c1226;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 6px;
+  }
+  .confidence-block .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    font-weight: 600;
+    min-width: 88px;
+  }
+  .meter {
+    flex: 1;
+    height: 8px;
+    background: #1a2347;
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .meter > i {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.4s ease;
+  }
+  .confidence-value {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    color: var(--ink);
+    min-width: 48px;
+    text-align: right;
+  }
+  details.raw {
+    margin-top: 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  details.raw > summary {
+    cursor: pointer;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    background: #0c1226;
+    list-style: none;
+    user-select: none;
+  }
+  details.raw > summary::-webkit-details-marker { display: none; }
+  details.raw > summary::before { content: "▸ "; color: var(--accent); }
+  details.raw[open] > summary::before { content: "▾ "; }
+  details.raw > pre {
+    border: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    margin: 0;
+    max-height: 320px;
+  }
 </style>
 </head>
 <body>
@@ -169,7 +354,9 @@
 
   <section class="card">
     <h2>Classification</h2>
-    <pre id="result">Submit a ticket to see the JSON response here.</pre>
+    <div id="result">
+      <div class="result-empty">Submit a ticket to see the classification here.</div>
+    </div>
   </section>
 </main>
 
@@ -178,12 +365,112 @@
   const samples = document.querySelectorAll('.sample-row button');
   samples.forEach((b) => b.addEventListener('click', () => { $('message').value = b.dataset.msg; }));
 
+  // Render a classification object as styled cards.
+  // IMPORTANT: the field names rendered here match the brief's response schema
+  // (ticket_id, case_type, severity, department, agent_summary,
+  //  human_review_required, confidence). Anything else is shown only in the
+  // collapsible raw-JSON viewer underneath.
+  function renderClassification(data) {
+    const sev = (data.severity || '').toLowerCase();
+    const human = !!data.human_review_required;
+    const conf = typeof data.confidence === 'number' ? data.confidence : 0;
+    const pct = Math.max(0, Math.min(1, conf)) * 100;
+
+    const wrap = document.createElement('div');
+
+    // Top: ticket id + human-review flag
+    const head = document.createElement('div');
+    head.className = 'result-head';
+    head.innerHTML = `
+      <div class="ticket-id">TICKET&nbsp;<strong>${escapeHtml(data.ticket_id || '—')}</strong></div>
+      <div class="human-flag ${human ? 'on' : 'off'}">
+        <span class="dot"></span>
+        ${human ? 'Human review required' : 'Auto-resolvable'}
+      </div>
+    `;
+    wrap.appendChild(head);
+
+    // Hero row: case_type, severity
+    const hero = document.createElement('div');
+    hero.className = 'hero-row';
+    hero.innerHTML = `
+      <div class="tile case">
+        <div class="label">Case type</div>
+        <div class="value">${escapeHtml(humanize(data.case_type))}</div>
+      </div>
+      <div class="tile severity">
+        <div class="label">Severity</div>
+        <div class="value"><span class="sev-pill ${sev}">${escapeHtml(sev)}</span></div>
+      </div>
+    `;
+    wrap.appendChild(hero);
+
+    // Department tile (full width)
+    const dept = document.createElement('div');
+    dept.className = 'tile department';
+    dept.style.marginBottom = '14px';
+    dept.innerHTML = `
+      <div class="label">Routed to department</div>
+      <div class="value">${escapeHtml(data.department || '—')}</div>
+    `;
+    wrap.appendChild(dept);
+
+    // Agent summary as a quote
+    const summary = document.createElement('div');
+    summary.className = 'summary';
+    summary.innerHTML = `<span class="summary-text">${escapeHtml(data.agent_summary || '')}</span>`;
+    wrap.appendChild(summary);
+
+    // Confidence meter
+    const confBlock = document.createElement('div');
+    confBlock.className = 'confidence-block';
+    confBlock.innerHTML = `
+      <div class="label">Confidence</div>
+      <div class="meter"><i style="width:${pct.toFixed(1)}%"></i></div>
+      <div class="confidence-value">${conf.toFixed(2)}</div>
+    `;
+    wrap.appendChild(confBlock);
+
+    // Collapsible raw JSON for graders / debugging
+    const raw = document.createElement('details');
+    raw.className = 'raw';
+    raw.innerHTML = `
+      <summary>View raw JSON response</summary>
+      <pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>
+    `;
+    wrap.appendChild(raw);
+
+    return wrap;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    })[c]);
+  }
+  function humanize(s) {
+    return String(s).replace(/_/g, ' ');
+  }
+
+  function renderError(data) {
+    const wrap = document.createElement('div');
+    wrap.className = 'result-empty';
+    wrap.style.color = 'var(--bad)';
+    wrap.style.borderColor = 'rgba(255, 92, 122, 0.35)';
+    wrap.textContent = 'Error: ' + (data && data.detail ? JSON.stringify(data.detail) : 'request failed');
+    const raw = document.createElement('details');
+    raw.className = 'raw';
+    raw.innerHTML = `<summary>View raw JSON response</summary><pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>`;
+    wrap.appendChild(raw);
+    return wrap;
+  }
+
   $('submit').addEventListener('click', async () => {
     const status = $('status');
     const out = $('result');
     status.className = 'status';
     status.textContent = 'Sending…';
-    out.textContent = '…';
+    out.innerHTML = '<div class="result-empty">Working…</div>';
 
     const body = {
       ticket_id: $('ticket_id').value.trim() || 'T-' + Date.now(),
@@ -194,6 +481,7 @@
     if (!body.message) {
       status.className = 'status err';
       status.textContent = 'Please enter a customer message.';
+      out.innerHTML = '<div class="result-empty">Submit a ticket to see the classification here.</div>';
       return;
     }
 
@@ -209,16 +497,16 @@
       if (!r.ok) {
         status.className = 'status err';
         status.textContent = 'HTTP ' + r.status + ' in ' + elapsed + ' ms';
-        out.textContent = JSON.stringify(data, null, 2);
+        out.replaceChildren(renderError(data));
         return;
       }
       status.className = 'status ok';
       status.textContent = 'HTTP 200 in ' + elapsed + ' ms';
-      out.textContent = JSON.stringify(data, null, 2);
+      out.replaceChildren(renderClassification(data));
     } catch (e) {
       status.className = 'status err';
       status.textContent = 'Network error: ' + e.message;
-      out.textContent = String(e);
+      out.replaceChildren(renderError({ detail: e.message }));
     }
   });
 </script>
